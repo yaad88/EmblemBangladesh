@@ -1,0 +1,39 @@
+<html>
+<head>
+  <script
+  src="https://code.jquery.com/jquery-2.1.0.js"
+  integrity="sha256-D6d1KSapXjq2tfZ6Ie9AYozkRHyB3fT2ys9mO2+4Wvc="
+  crossorigin="anonymous"></script>
+  <script src="./libs/jquery.js" ></script>
+  </head>
+<body>
+  <form id="form1" runat="server">
+    <input type='file' id="imgInp" />
+    <img id="blah" src="#" alt="your image" />
+</form>
+
+<img src="https://picsum.photos/200" id="img2"/>
+<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Wiktionary_small.svg/350px-Wiktionary_small.svg.png" alt="" class="imgs" id="the_id" width="180" height="60" />
+
+
+
+
+<script>
+  function readURL(input) {
+       if (input.files && input.files[0]) {
+           var reader = new FileReader();
+
+           reader.onload = function (e) {
+               $('#img2').attr('src', e.target.result);
+           }
+
+           reader.readAsDataURL(input.files[0]);
+       }
+   }
+
+   $("#imgInp").change(function(){
+       readURL(this);
+   });
+   </script>
+  </body>
+</html>

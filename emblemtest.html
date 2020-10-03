@@ -1,0 +1,83 @@
+
+
+<html>
+<head>
+  <script
+  src="https://code.jquery.com/jquery-2.1.0.js"
+  integrity="sha256-D6d1KSapXjq2tfZ6Ie9AYozkRHyB3fT2ys9mO2+4Wvc="
+  crossorigin="anonymous"></script>
+  <style>
+    img {
+  width: 400px;
+}
+
+.hidden {
+  display: none;
+}
+    </style>
+  </head>
+<body>
+<!--<input class="file1" type="file" data-image-selector=".image1" />-->
+<input class="file2" type="file" data-image-selector=".image2" />
+<br />
+<img class="image1" src="images/cxcrO.png" alt="medium image 1" />
+<img class="image2 hidden" alt="medium image 2" />
+<br />
+<input class="btn-merge" type="button" value="Merge!" />
+<br />
+<img class="merged-image hidden" alt="merged image" />
+<canvas id="canvas" class="hidden"></canvas>
+<script>
+  $('.file1, .file2').on('change', function() {
+  var reader = new FileReader(),
+    imageSelector = $(this).data('image-selector');
+
+  if (this.files && this.files[0]) {
+    reader.onload = function(e) {
+      imageIsLoaded(e, imageSelector)
+    };
+    reader.readAsDataURL(this.files[0]);
+  }
+});
+
+$('.btn-merge').on('click', merge);
+
+function imageIsLoaded(e, imageSelector) {
+  $(imageSelector).attr('src', e.target.result);
+  $(imageSelector).removeClass('hidden');
+};
+
+function merge() {
+	var canvas = document.getElementById('canvas'),
+			ctx = canvas.getContext('2d'),
+      imageObj1 = new Image(),
+      imageObj2 = new Image();
+
+
+	imageObj1.src = $('.image1').attr('src');
+  wid=imageObj1.width;
+  he=imageObj1.height;
+  canvas.width = wid;
+  canvas.height= he;
+  console.log(canvas.width+"X"+canvas.height);
+  console.log(wid, he);
+  imageObj1.onload = function() {
+    ctx.globalAlpha = 1;
+    ctx.drawImage(imageObj1, 0, 0, wid, he);
+    imageObj2.src = $('.image2').attr('src');;
+    console.log(imageObj2.width, imageObj2.height);
+    imageObj2.width=wid;
+    imageObj2.height=he;
+    console.log(imageObj2.width, imageObj2.height);
+    imageObj2.onload = function() {
+    	ctx.globalAlpha = 1;
+      ctx.drawImage(imageObj2, 0, 0, wid, he);
+      var img = canvas.toDataURL('image/jpeg');
+      $('.merged-image').attr('src', img);
+      $('.merged-image').removeClass('hidden');
+    }
+  };
+}
+  </script>
+</body>
+</html>
